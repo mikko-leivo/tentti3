@@ -1,0 +1,54 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: quiz3 tehtava1 mikko
+
+#Parameters: Nimi, LatestAmiId, InstanceTypeParameter
+#Resources: Instance Security Group, EC2mikko,
+#Outputs: Ec2DNS, 
+
+
+Parameters:
+  Nimi:
+    Type: String
+    Defaul: Mikko
+  LatestAmiId:
+    Type: AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>
+    Default: '/aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-gp2'
+  InstanceTypeParameter:
+    Type: String
+    Default: t2.nano
+    AllowedValues:
+      - t2.nano
+
+
+Resources:
+  InstanceSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupName: mikko-ec2-sg-cl-teht1
+      GroupDescription: Allow port 22 to client host
+      #VpcId: !GetAtt myVpcSubnetStack.Outputs.StackVPC
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: 0.0.0.0/0
+
+  EC2mikko:
+    Type: "AWS::EC2::Instance"
+    Properties:
+      InstanceType: !Ref InstanceTypeParameter
+      ImageId: !Ref LatestAmiId
+      Tags:
+        - Key: Owner
+          Value: !Ref Nimi
+        - Key: Name
+          Value: mikko-ec2-cf
+      KeyName: mikon-demo-ec2
+      SecurityGroupIds:
+        - Ref: InstanceSecurityGroup
+
+
+Outputs:
+    Ec2DNS:
+      Description: The DNSName of the EC2
+      Value: !GetAtt EC2mikko.PublicDnsName
