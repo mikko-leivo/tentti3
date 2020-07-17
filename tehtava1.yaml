@@ -1,5 +1,5 @@
 AWSTemplateFormatVersion: "2010-09-09"
-Description: quiz3 tehtava1 mikko
+Description: quiz3 tehtava2 mikko
 
 #Parameters: Nimi, LatestAmiId, InstanceTypeParameter
 #Resources: Instance Security Group, EC2mikko, S3ampari, S3bucketArnParameter
@@ -30,11 +30,10 @@ Resources:
           FromPort: 22
           ToPort: 22
           CidrIp: 0.0.0.0/0
-        #Tehtävä 2 säädöt
         - IpProtocol: tcp
-            FromPort: 80
-            ToPort: 80
-            CidrIp: 0.0.0.0/0
+          FromPort: 80
+          ToPort: 80
+          CidrIp: 0.0.0.0/0
 
   EC2mikko:
     Type: "AWS::EC2::Instance"
