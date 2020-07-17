@@ -1,14 +1,17 @@
 AWSTemplateFormatVersion: "2010-09-09"
 Description: quiz3 tehtava1 mikko
 
+#MITEN VITUSSA TEHDÄÄN PAROMETRI JONKA DEFALT ON OMA NIMI???
+
 #Parameters: Nimi, LatestAmiId, InstanceTypeParameter
-#Resources: Instance Security Group, EC2mikko, S3ampari, S3bucketArnParameter
-#Outputs: Ec2DNS,
+#Resources: Instance Security Group, EC2mikko
+#Outputs: Ec2DNS
+
 
 Parameters:
   Nimi:
     Type: String
-    Defaul: Mikko
+    Defaul: "Mikko"
   LatestAmiId:
     Type: AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>
     Default: '/aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-gp2'
@@ -30,11 +33,6 @@ Resources:
           FromPort: 22
           ToPort: 22
           CidrIp: 0.0.0.0/0
-        #Tehtävä 2 säädöt
-        - IpProtocol: tcp
-            FromPort: 80
-            ToPort: 80
-            CidrIp: 0.0.0.0/0
 
   EC2mikko:
     Type: "AWS::EC2::Instance"
@@ -46,38 +44,8 @@ Resources:
           Value: !Ref Nimi
         - Key: Name
           Value: mikko-ec2-cf
-      #KeyName: mikon-demo-ec2
       SecurityGroupIds:
         - Ref: InstanceSecurityGroup
-      #Tehtävä 2 säätöä
-      UserData:
-        Fn::Base64:
-          Fn::Join:
-            - "\n"
-            - - "#!/bin/bash"
-              - "sudo su"
-              - "yum update -y"
-              - "yum install -y httpd.x86_64"
-              - "systemctl start httpd.service"
-              - "systemctl enable httpd.service"
-              - "echo 'jotain muuta' > /var/www/html/index.html"
-
-#Tehtävä 2 säädöt:
-  S3Ampari:
-    Type: AWS::S3::Bucket
-    Properties:
-      BucketName: mikko-s3-tehtava2-cf
-      Tags:
-        - Key: Owner
-          Value: !Ref Nimi
-
-  S3bucketArnParameter:
-    Type: AWS::SSM::Parameter
-    Properties:
-      Type: String
-      Value: !Ref S3Ampari
-      Description: SSM Parameter jolla haetaan luotavan S3 ämpärin ARN
-
 
 Outputs:
     Ec2DNS:
