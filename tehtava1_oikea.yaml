@@ -1,8 +1,6 @@
 AWSTemplateFormatVersion: "2010-09-09"
 Description: quiz3 tehtava1 mikko
 
-#MITEN VITUSSA TEHDÄÄN PAROMETRI JONKA DEFALT ON OMA NIMI???
-
 #Parameters: Nimi, LatestAmiId, InstanceTypeParameter
 #Resources: Instance Security Group, EC2mikko
 #Outputs: Ec2DNS
@@ -11,7 +9,7 @@ Description: quiz3 tehtava1 mikko
 Parameters:
   Nimi:
     Type: String
-    Defaul: "Mikko"
+    Default: "Mikko"
   LatestAmiId:
     Type: AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>
     Default: '/aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-gp2'
